@@ -112,7 +112,7 @@ namespace Modeling1
         }
 
         
-        //Метод обрабатывающий событие нажатия кнопки buttonRun11
+        //Метод обрабатывающий событие нажатия кнопки buttonSort11
         private void buttonSort11_Click(object sender, EventArgs e) //Найти алгоритмом
         {
             task1 = new int[5, 2];
@@ -127,7 +127,7 @@ namespace Modeling1
         }
 
         
-        //Метод обрабатывающий событие нажатия кнопки buttonRun12
+        //Метод обрабатывающий событие нажатия кнопки buttonSort12
         private void buttonSort12_Click(object sender, EventArgs e) //Найти перебором
         {
             task1 = new int[5, 2];
@@ -195,24 +195,29 @@ namespace Modeling1
         //Поиск времени окончания обработки для Nx2
         private void FindAmountOfDowntimeNx2()
         {
+            //Массив хранит величины простоев перед каждой задачей на втором станке.
             int[] x = new int[task1.GetLength(0)];
 
+            //Для каждой задачи на станке 2 рассчитываются
             for (int i = 0; i < task1.GetLength(0); i++)
             {
+                //Момент времени, когда соответствующая задача на первом станке завершена.
                 int sumTask1 = 0;
                 for (int n = 0; n <= i; n++)
                 {
+                    //Рассчитывается путём суммирования длительностей всех задач на первом станке до i - й (включительно)
                     sumTask1 += task1[n, 0];
                 }
-
+                //Суммарное время простоев для всех предыдущих задач на втором станке.
                 int sumDowntime = 0;
+                //Время, занятое выполнением всех предыдущих задач на втором станке.
                 int sumTask1Duration = 0;
                 for (int m = 0; m < i; m++)
                 {
                     sumDowntime += x[m];
                     sumTask1Duration += task1[m, 1];
                 }
-
+                //рассчитываемый простой перед выполнением задачи i на втором станке.
                 x[i] = Math.Max(0, sumTask1 - sumDowntime - sumTask1Duration);
             }
 
